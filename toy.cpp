@@ -164,7 +164,7 @@ static void InitializeModule() {
 
 void HandleDefinition(std::unique_ptr<FunctionAST> FnAST) {
   if (auto *FnIR = FnAST->codegen()) {
-    fprintf(stderr, "Read function definition:");
+    fprintf(stderr, "Read function definition:\n");
     FnIR->print(errs());
     fprintf(stderr, "\n");
   }
@@ -172,7 +172,7 @@ void HandleDefinition(std::unique_ptr<FunctionAST> FnAST) {
 
 void HandleExtern(std::unique_ptr<PrototypeAST> ProtoAST) {
   if (auto *FnIR = ProtoAST->codegen()) {
-    fprintf(stderr, "Read extern: ");
+    fprintf(stderr, "Read extern:\n");
     FnIR->print(errs());
     fprintf(stderr, "\n");
   }
@@ -184,7 +184,7 @@ void HandleTopLevelExpression(std::unique_ptr<ExprAST> E) {
                                                std::vector<std::string>());
   auto FnAST = std::make_unique<FunctionAST>(std::move(Proto), std::move(E));
   if (auto *FnIR = FnAST->codegen()) {
-    fprintf(stderr, "Read top-level expression:");
+    fprintf(stderr, "Read top-level expression:\n");
     FnIR->print(errs());
     fprintf(stderr, "\n");
 

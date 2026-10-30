@@ -67,17 +67,19 @@ void yyerror(const char *S);
 
 %%
 
-/// top ::= definition | external | expression | ';'
+/// program ::= (top | ';')*
+/// A ';' is not an item of its own, so it doesn't print a second prompt.
 program
   : %empty
   | program top           { fprintf(stderr, "ready> "); }
+  | program ';'           { /* ignore top-level semicolons */ }
   ;
 
+/// top ::= definition | external | expression
 top
   : definition            { HandleDefinition(std::unique_ptr<FunctionAST>($1)); }
   | external              { HandleExtern(std::unique_ptr<PrototypeAST>($1)); }
   | expr                  { HandleTopLevelExpression(std::unique_ptr<ExprAST>($1)); }
-  | ';'                   { /* ignore top-level semicolons */ }
   | error ';'             { yyerrok; /* skip to the next ';' and carry on */ }
   ;
 
